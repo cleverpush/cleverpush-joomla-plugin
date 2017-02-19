@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="1.6" type="plugin" group="system" method="upgrade">
+	<name>CleverPush</name>
+	<author>CleverPush</author>
+	<creationDate>August 2016</creationDate>
+	<copyright>Copyright (c) CleverPush. All rights reserved.</copyright>
+	<license></license>
+	<version>1.0</version>
+	<description>CleverPush lets you send browser push notifications to your users in the simplest way possible. Installing the CleverPush plugin will automatically insert the CleverPush code into your Joomla site.</description>
+	<files>
+		<filename plugin="cleverpush">cleverpush.php</filename>
+	</files>
+	<config>
+		<fields name="params" >
+			<fieldset name="basic">
+				<field name="cleverpush_id" type="text" default="" label="CleverPush ID (subdomain)" description="Your channel identifier (subdomain)" />
+			</fieldset>
+		</fields>
+	</config>
+</extension>

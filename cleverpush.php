@@ -20,20 +20,31 @@ class plgSystemCleverPush extends JPlugin
 			return;
 		}
 
-		$cleverpush_id = $this->params->get('cleverpush_id', '');
+		$cleverpush_subdomain = $this->params->get('cleverpush_id', '');
+		$cleverpush_channel_id = $this->params->get('cleverpush_channel_id', '');
 
-		if ($cleverpush_id == '')
+		if (empty($cleverpush_subdomain) && empty($cleverpush_channel_id))
 		{
 			return;
 		}
 
-		$buffer = JResponse::getBody();
-
-		$javascript ='
-		<script>
-		(function(c,l,v,r,p,s,h){c[\'CleverPushObject\']=p;c[p]=c[p]||function(){(c[p].q=c[p].q||[]).push(arguments)},c[p].l=1*new Date();s=l.createElement(v),h=l.getElementsByTagName(v)[0];s.async=1;s.src=r;h.parentNode.insertBefore(s,h)})(window,document,\'script\',\'//' . $cleverpush_id . '.cleverpush.com/loader.js\',\'cleverpush\'); cleverpush(\'triggerOptIn\'); cleverpush(\'checkNotificationClick\');
-		</script>
-		';
+		if (!empty($cleverpush_channel_id)) {
+			$javascript ='
+			<script src="https://static.cleverpush.com/sdk/cleverpush.js" async></script>
+			<script>
+			  CleverPush = window.CleverPush || [];
+			  CleverPush.push([\'init\', {
+			    channelId: \'' . $cleverpush_channel_id . '\'
+			  }]);
+			</script>
+			';
+		} else {
+			$javascript ='
+			<script>
+			(function(c,l,v,r,p,s,h){c[\'CleverPushObject\']=p;c[p]=c[p]||function(){(c[p].q=c[p].q||[]).push(arguments)},c[p].l=1*new Date();s=l.createElement(v),h=l.getElementsByTagName(v)[0];s.async=1;s.src=r;h.parentNode.insertBefore(s,h)})(window,document,\'script\',\'//' . $cleverpush_subdomain . '.cleverpush.com/loader.js\',\'cleverpush\'); cleverpush(\'triggerOptIn\'); cleverpush(\'checkNotificationClick\');
+			</script>
+			';
+		}
 
 		$buffer = JResponse::getBody();
 		$buffer = preg_replace ('/<\/head>/', "\n\n" . $javascript . "\n\n</head>", $buffer);
